@@ -14,8 +14,23 @@
 
 #include <stdio.h>
 #include "Token.h"
+#include <vector>
+#include <string>
+#include <iostream>
 
+using namespace std;
 
+class Parser {
+public:
+    Parser();
+    ~Parser();
+    void parse();
+    
+    
+private:
+    
+    
+};
 
 #endif /* Token_h */
 #endif /* Parser_h */
