@@ -10,6 +10,7 @@
 
 #include <string>
 #include <iostream>
+#include <vector>
 
 using namespace std;
 
@@ -26,10 +27,12 @@ public:
     ~Token();
     string toString();
     void printToken();
+    //vector<Token> getVector();
 private:
     TokenType type;
     string value;
     int lineNum;
+    //vector<Token> tokenVector;
 };
 
 #endif /* Token.h */

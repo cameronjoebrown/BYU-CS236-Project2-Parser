@@ -10,14 +10,18 @@
 #include <iostream>
 #include <fstream>
 #include "Scanner.h"
-#include "Token.h"
+#include "Parser.h"
 
 using namespace std;
 
 int main(int argc, char* argv[]){
     string fileName = argv[1];
+    Parser myParser(fileName);
+    myParser.parse();
+    /* Lab 1 stuff
     Scanner myScanner(fileName);
     myScanner.scan();
     myScanner.printVector();
+     */
     return 0;
 }

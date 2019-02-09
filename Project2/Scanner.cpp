@@ -136,7 +136,7 @@ void Scanner :: commentCheck() {
     temp += current;
     while(commentScan) {
         if(inputFile.peek() == '\n') {
-            tokenVector.push_back(Token(COMMENT, temp, lineNum));
+            //tokenVector.push_back(Token(COMMENT, temp, lineNum));
             commentScan = false;
             break;
         }
@@ -163,7 +163,7 @@ void Scanner :: multiLineCheck() {
             if(inputFile.peek() == '#') { // Finished
                 current = inputFile.get();
                 temp += current;
-                tokenVector.push_back(Token(COMMENT, temp, lineStart));
+                //tokenVector.push_back(Token(COMMENT, temp, lineStart));
                 commentScan = false;
                 break;
             }
@@ -177,7 +177,7 @@ void Scanner :: multiLineCheck() {
             if(inputFile.peek() == '\n') {
                 lineNum++;
             }
-            current = inputFile.get(); //Needs fixing possibly!
+            current = inputFile.get(); 
             temp += current;
         }
         else {
@@ -307,4 +307,8 @@ void Scanner :: printVector() {
         (tokenVector.at(i)).printToken();
     }
     cout << "Total Tokens = " << tokenVector.size();
+}
+
+vector<Token> Scanner :: getVector() {
+    return tokenVector;
 }

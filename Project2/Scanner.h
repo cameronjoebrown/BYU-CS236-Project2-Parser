@@ -27,6 +27,7 @@ public:
     void commentCheck();
     void multiLineCheck();
     void checkOther();
+    vector<Token> getVector();
     
 private:
     string file;

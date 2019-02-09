@@ -85,3 +85,9 @@ string Token :: toString() {
 void Token :: printToken() {
     cout << "(" << toString() << "," << "\"" << value << "\"," << lineNum << ")" << endl;
 }
+/* I'm not sure if it would better to have this function and tokenVector
+ in Scanner of Token
+vector<Token> Token :: getVector() {
+    return tokenVector;
+}
+*/

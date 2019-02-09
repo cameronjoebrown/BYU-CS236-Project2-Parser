@@ -13,22 +13,24 @@
 #define Token_h
 
 #include <stdio.h>
-#include "Token.h"
 #include <vector>
 #include <string>
 #include <iostream>
+#include "Token.h"
+#include "Scanner.h"
 
 using namespace std;
 
 class Parser {
 public:
-    Parser();
+    Parser(string fileName);
     ~Parser();
     void parse();
+    void match(TokenType t);
+    void error();
     
     
 private:
-    
     
 };
 
