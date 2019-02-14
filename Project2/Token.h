@@ -23,10 +23,12 @@ enum TokenType {
 
 class Token {
 public:
+    Token();
     Token(TokenType t, string val, int numLine);
     ~Token();
     string toString();
     void printToken();
+    TokenType getTokenType();
     //vector<Token> getVector();
 private:
     TokenType type;

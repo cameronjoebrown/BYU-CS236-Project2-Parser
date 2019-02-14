@@ -9,13 +9,11 @@
 #ifndef Parser_h
 #define Parser_h
 
-#ifndef Token_h
-#define Token_h
-
 #include <stdio.h>
 #include <vector>
 #include <string>
 #include <iostream>
+#include <string>
 #include "Token.h"
 #include "Scanner.h"
 
@@ -27,12 +25,27 @@ public:
     ~Parser();
     void parse();
     void match(TokenType t);
-    void error();
+    void scheme();
+    void fact();
+    void rule();
+    void query();
+    void schemeList();
+    void factList();
+    void ruleList();
+    void queryList();
+    void idList();
+    void stringList();
+    void headPredicate();
+    void predicate();
+    void predicateList();
+    void parameter();
+    void parameterList();
     
     
 private:
-    
+    Token current;
+    vector<Token> tokenVector;
 };
 
-#endif /* Token_h */
-#endif /* Parser_h */
+
+#endif // Parser_h

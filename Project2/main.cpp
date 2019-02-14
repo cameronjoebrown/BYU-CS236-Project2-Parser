@@ -18,6 +18,7 @@ int main(int argc, char* argv[]){
     string fileName = argv[1];
     Parser myParser(fileName);
     myParser.parse();
+    
     /* Lab 1 stuff
     Scanner myScanner(fileName);
     myScanner.scan();

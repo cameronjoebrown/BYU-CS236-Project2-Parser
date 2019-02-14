@@ -9,6 +9,10 @@
 #include "Token.h"
 #include <iostream>
 
+Token :: Token() {
+    
+}
+
 Token :: Token(TokenType t, string val, int numLine) {
     type = t;
     value = val;
@@ -85,6 +89,11 @@ string Token :: toString() {
 void Token :: printToken() {
     cout << "(" << toString() << "," << "\"" << value << "\"," << lineNum << ")" << endl;
 }
+
+TokenType Token :: getTokenType() {
+    return type;
+}
+
 /* I'm not sure if it would better to have this function and tokenVector
  in Scanner of Token
 vector<Token> Token :: getVector() {
