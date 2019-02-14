@@ -40,7 +40,8 @@ public:
     void predicateList();
     void parameter();
     void parameterList();
-    
+    void expression();
+    void operate();
     
 private:
     Token current;

@@ -19,10 +19,5 @@ int main(int argc, char* argv[]){
     Parser myParser(fileName);
     myParser.parse();
     
-    /* Lab 1 stuff
-    Scanner myScanner(fileName);
-    myScanner.scan();
-    myScanner.printVector();
-     */
     return 0;
 }
