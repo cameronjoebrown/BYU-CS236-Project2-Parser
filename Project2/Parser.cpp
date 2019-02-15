@@ -85,6 +85,29 @@ void Parser :: scheme() {
     match(RIGHT_PAREN);
     data.addScheme(p);
 }
+
+void Parser :: schemeList() {
+    // schemeList -> scheme schemeList | lambda
+    if (current.getTokenType() == ID){
+        scheme();
+    }
+    if(current.getTokenType() == ID) {
+        schemeList();
+    }
+}
+
+void Parser :: idList() {
+    // idList -> COMMA ID idList | lambda
+    match(COMMA);
+    if (current.getTokenType() == ID){
+        p.addParameter(Parameter(current.toString(), current.getValue()));
+    }
+    match(ID);
+    if (current.getTokenType() == COMMA) {
+        idList();
+    }
+}
+
 void Parser :: fact() {
     // fact -> ID LEFT_PAREN STRING stringList RIGHT_PAREN PERIOD
     p = Predicate(current.getValue());
@@ -101,6 +124,30 @@ void Parser :: fact() {
     match(PERIOD);
     data.addFact(p);
 }
+
+void Parser :: factList() {
+    // factList -> fact factList | lambda
+    if(current.getTokenType() == ID){
+        fact();
+        if (current.getTokenType() == ID){
+            factList();
+        }
+    }
+}
+
+void Parser :: stringList() {
+    // stringList -> COMMA STRING stringList | lambda
+    match(COMMA);
+    if (current.getTokenType() == STRING){
+        p.addParameter(Parameter(current.toString(), current.getValue()));
+    }
+    match(STRING);
+    if (current.getTokenType() == COMMA) {
+        stringList();
+    }
+    
+}
+
 void Parser :: rule() {
     // rule ->  headPredicate COLON_DASH predicate predicateList PERIOD
     headPredicate();
@@ -113,31 +160,7 @@ void Parser :: rule() {
     match(PERIOD);
     data.addRule(r);
 }
-void Parser :: query() {
-    // query -> predicate Q_MARK
-    p = Predicate(current.getValue());
-    predicate();
-    match(Q_MARK);
-    data.addQuery(p);
-}
-void Parser :: schemeList() {
-    // schemeList -> scheme schemeList | lambda
-    if (current.getTokenType() == ID){
-        scheme();
-    }
-    if(current.getTokenType() == ID) {
-        schemeList();
-    }
-}
-void Parser :: factList() {
-    // factList -> fact factList | lambda
-    if(current.getTokenType() == ID){
-        fact();
-        if (current.getTokenType() == ID){
-            factList();
-        }
-    }
-}
+
 void Parser :: ruleList() {
     // ruleList ->  rule ruleList | lambda
     if(current.getTokenType() == ID){
@@ -147,6 +170,15 @@ void Parser :: ruleList() {
         }
     }
 }
+
+void Parser :: query() {
+    // query -> predicate Q_MARK
+    p = Predicate(current.getValue());
+    predicate();
+    match(Q_MARK);
+    data.addQuery(p);
+}
+
 void Parser :: queryList() {
     // queryList -> query queryList | lambda
     if (current.getTokenType() == END){
@@ -162,31 +194,6 @@ void Parser :: queryList() {
         }
         
     }
-}
-
-void Parser :: idList() {
-    // idList -> COMMA ID idList | lambda
-    match(COMMA);
-    if (current.getTokenType() == ID){
-        p.addParameter(Parameter(current.toString(), current.getValue()));
-    }
-    match(ID);
-    if (current.getTokenType() == COMMA) {
-        idList();
-    }
-}
-
-void Parser :: stringList() {
-    // stringList -> COMMA STRING stringList | lambda
-    match(COMMA);
-    if (current.getTokenType() == STRING){
-        p.addParameter(Parameter(current.toString(), current.getValue()));
-    }
-    match(STRING);
-    if (current.getTokenType() == COMMA) {
-        stringList();
-    }
-
 }
 
 void Parser :: headPredicate() {
@@ -265,6 +272,22 @@ void Parser :: operate(){
     }
 }
 
+Token getCurrentToken() {
+    return current;
+}
+
+vector<Token> Parser :: getTokenVector() {
+    return tokenVector;
+}
+
 DatalogProgram Parser :: getData(){
     return data;
+}
+
+Predicate Parser :: getPredicate() {
+    return p;
+}
+
+Rule Parser :: getRule() {
+    return r;
 }

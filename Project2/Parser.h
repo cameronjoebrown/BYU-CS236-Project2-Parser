@@ -27,15 +27,15 @@ public:
     void parse();
     void match(TokenType t);
     void scheme();
-    void fact();
-    void rule();
-    void query();
     void schemeList();
-    void factList();
-    void ruleList();
-    void queryList();
     void idList();
+    void fact();
+    void factList();
     void stringList();
+    void rule();
+    void ruleList();
+    void query();
+    void queryList();
     void headPredicate();
     void predicate();
     void predicateList();
@@ -43,7 +43,12 @@ public:
     void parameterList();
     void expression();
     void operate();
+    Token getCurrentToken();
+    vector<Token> getTokenVector();
     DatalogProgram getData();
+    Predicate getPredicate();;
+    Rule getRule();
+    
     
 private:
     Token current;
