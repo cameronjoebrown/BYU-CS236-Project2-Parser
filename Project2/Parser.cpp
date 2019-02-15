@@ -76,34 +76,30 @@ void Parser :: scheme() {
     match(ID);
     match(LEFT_PAREN);
     if (current.getTokenType() == ID){
-        p.addParameter(Parameter(current.toString(), current.getValue()));
+         p.addParameter(Parameter(current.getValue(), current.toString()));
     }
     match(ID);
-    if(current.getTokenType() == COMMA) {
-        idList();
-    }
+    idList();
     match(RIGHT_PAREN);
     data.addScheme(p);
 }
 
 void Parser :: schemeList() {
     // schemeList -> scheme schemeList | lambda
-    if (current.getTokenType() == ID){
+    if (current.getTokenType() != FACTS){
         scheme();
-    }
-    if(current.getTokenType() == ID) {
         schemeList();
     }
 }
 
 void Parser :: idList() {
     // idList -> COMMA ID idList | lambda
-    match(COMMA);
-    if (current.getTokenType() == ID){
-        p.addParameter(Parameter(current.toString(), current.getValue()));
-    }
-    match(ID);
-    if (current.getTokenType() == COMMA) {
+    if(current.getTokenType() != RIGHT_PAREN) {
+        match(COMMA);
+        if (current.getTokenType() == ID){
+             p.addParameter(Parameter(current.getValue(), current.toString()));
+        }
+        match(ID);
         idList();
     }
 }
@@ -114,12 +110,10 @@ void Parser :: fact() {
     match(ID);
     match(LEFT_PAREN);
     if (current.getTokenType() == STRING){
-        p.addParameter(Parameter(current.toString(), current.getValue()));
+         p.addParameter(Parameter(current.getValue(), current.toString()));
     }
     match(STRING);
-    if(current.getTokenType() == COMMA) {
-        stringList();
-    }
+    stringList();
     match(RIGHT_PAREN);
     match(PERIOD);
     data.addFact(p);
@@ -127,22 +121,20 @@ void Parser :: fact() {
 
 void Parser :: factList() {
     // factList -> fact factList | lambda
-    if(current.getTokenType() == ID){
+    if(current.getTokenType() != RULES){
         fact();
-        if (current.getTokenType() == ID){
-            factList();
-        }
+        factList();
     }
 }
 
 void Parser :: stringList() {
     // stringList -> COMMA STRING stringList | lambda
-    match(COMMA);
-    if (current.getTokenType() == STRING){
-        p.addParameter(Parameter(current.toString(), current.getValue()));
-    }
-    match(STRING);
-    if (current.getTokenType() == COMMA) {
+    if(current.getTokenType() != RIGHT_PAREN) {
+        match(COMMA);
+        if (current.getTokenType() == STRING){
+             p.addParameter(Parameter(current.getValue(), current.toString()));
+        }
+        match(STRING);
         stringList();
     }
     
@@ -150,125 +142,124 @@ void Parser :: stringList() {
 
 void Parser :: rule() {
     // rule ->  headPredicate COLON_DASH predicate predicateList PERIOD
-    headPredicate();
+    p = headPredicate();
     r = Rule(p);
     match(COLON_DASH);
-    predicate();
-    if (current.getTokenType() == COMMA){
-       predicateList();
-    }
+    r.addPredicate(predicate());
+    predicateList();
     match(PERIOD);
     data.addRule(r);
 }
 
 void Parser :: ruleList() {
     // ruleList ->  rule ruleList | lambda
-    if(current.getTokenType() == ID){
+    if(current.getTokenType() != QUERIES){
         rule();
-        if (current.getTokenType() == ID){
-            ruleList();
-        }
+        ruleList();
     }
 }
 
 void Parser :: query() {
     // query -> predicate Q_MARK
-    p = Predicate(current.getValue());
-    predicate();
+    data.addQuery(predicate());
     match(Q_MARK);
-    data.addQuery(p);
 }
 
 void Parser :: queryList() {
     // queryList -> query queryList | lambda
-    if (current.getTokenType() == END){
-        
-    }
-    else {
+    if(current.getTokenType() != END){
         query();
-        if(current.getTokenType() == ID) {
-            queryList();
-        }
-        else if(current.getTokenType() != END){
-            throw current;
-        }
-        
+        queryList();
     }
 }
-
-void Parser :: headPredicate() {
+Predicate Parser :: headPredicate() {
     // headPredicate ->  ID LEFT_PAREN ID idList RIGHT_PAREN
     p = Predicate(current.getValue());
     match(ID);
     match(LEFT_PAREN);
     if (current.getTokenType() == ID){
-        p.addParameter(Parameter(current.toString(), current.getValue()));
+        p.addParameter(Parameter(current.getValue(), current.toString()));
     }
     match(ID);
-    if (current.getTokenType() == COMMA){
-        idList();
-    }
+    idList();
     match(RIGHT_PAREN);
+    return p;
 }
 
-void Parser :: predicate() {
+Predicate Parser :: predicate() {
     // predicate -> ID LEFT_PAREN parameter parameterList RIGHT_PAREN
     p = Predicate(current.getValue());
     match(ID);
     match(LEFT_PAREN);
-    parameter();
-    if (current.getTokenType() == COMMA){
-        parameterList();
-    }
+    p.addParameter(parameter());
+    parameterList();
     match(RIGHT_PAREN);
-    r.addPredicate(p);
+    return p;
 }
 
 void Parser :: predicateList(){
     // predicateList -> COMMA predicate predicateList | lambda
-    match(COMMA);
-    predicate();
-    if(current.getTokenType() == COMMA){
+    if(current.getTokenType() != PERIOD && current.getTokenType() != QUERIES) {
+        match(COMMA);
+        r.addPredicate(predicate());
         predicateList();
     }
 }
 
-void Parser :: parameter() {
+Parameter Parser :: parameter() {
     //  parameter -> STRING | ID | expression
-    if(current.getTokenType() == STRING || current.getTokenType() == ID){
-        p.addParameter(Parameter(current.toString(), current.getValue()));
-        match(current.getTokenType());
+    Parameter newParam;
+    if(current.getTokenType() == STRING){
+        newParam.setValue(current.getValue());
+        match(STRING);
     }
-    if (current.getTokenType() == LEFT_PAREN){
-        expression();
+    else if(current.getTokenType() == ID) {
+        newParam.setValue(current.getValue());
+        match(ID);
     }
+    else if(current.getTokenType() == LEFT_PAREN) {
+        newParam.setValue(expression());
+    }
+    else {
+        throw current;
+    }
+    return newParam;
 }
 
 void Parser :: parameterList() {
     // parameterList -> COMMA parameter parameterList | lambda
-    match(COMMA);
-    parameter();
-    if(current.getTokenType() == COMMA){
+    if(current.getTokenType() != RIGHT_PAREN) {
+        match(COMMA);
+        p.addParameter(parameter());
         parameterList();
     }
 }
 
-void Parser :: expression() {
+string Parser :: expression() {
     // expression -> LEFT_PAREN parameter operator parameter RIGHT_PAREN
+    string temp;
+    temp += "(";
     match(LEFT_PAREN);
-    parameter();
-    operate();
-    parameter();
+    temp += parameter().getValue();
+    temp += operate();
+    temp += parameter().getValue();
     match(RIGHT_PAREN);
+    temp += ")";
+    return temp;
 }
 
-void Parser :: operate(){
+string Parser :: operate(){
     // operator -> ADD | MULTIPLY
     if (current.getTokenType() == ADD) {
         match(ADD);
+        return "+";
     }
-    if (current.getTokenType() == MULTIPLY) {
+    else if (current.getTokenType() == MULTIPLY) {
         match(MULTIPLY);
+        return "*";
+    }
+    else {
+        throw current;
     }
 }
 

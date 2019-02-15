@@ -36,13 +36,13 @@ public:
     void ruleList();
     void query();
     void queryList();
-    void headPredicate();
-    void predicate();
+    Predicate headPredicate();
+    Predicate predicate();
     void predicateList();
-    void parameter();
+    Parameter parameter();
     void parameterList();
-    void expression();
-    void operate();
+    string expression();
+    string operate();
     vector<Token> getTokenVector();
     DatalogProgram getData();
     Predicate getPredicate();;

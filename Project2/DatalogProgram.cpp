@@ -75,8 +75,9 @@ void DatalogProgram::addQuery(Predicate query){
 
 void DatalogProgram::addDomain(vector<Parameter> paramList){
     for(int i = 0; i < (int)paramList.size(); i++){
-        if(paramList[i].getType() == "STRING")
+        if(paramList[i].getType() == "STRING") {
             domain.insert(paramList[i].getValue());
+        }
     }
     
 }

@@ -9,13 +9,18 @@
 #include "Parameter.h"
 
 Parameter :: Parameter() {
-    type = "";
     value = "";
+    type = "";
 }
 
-Parameter :: Parameter(string tokenType, string val) {
-    type = tokenType;
+Parameter :: Parameter(string val) {
     value = val;
+    type = "";
+}
+
+Parameter :: Parameter(string val, string tokenType) {
+    value = val;
+    type = tokenType;
 }
 
 Parameter :: ~Parameter() {
@@ -26,10 +31,14 @@ string Parameter :: getValue() {
     return value;
 }
 
-string Parameter :: getType() {
+string Parameter :: toString() {
+    return value;
+}
+
+string Parameter::getType(){
     return type;
 }
 
-string Parameter :: toString() {
-    return value;
+void Parameter :: setValue(string val) {
+    value = val;
 }

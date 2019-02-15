@@ -141,7 +141,7 @@ void Scanner :: commentCheck() {
             break;
         }
         else if(inputFile.peek() == EOF) { // Comment didn't end. UNDEFINED
-            tokenVector.push_back(Token(COMMENT, temp, lineNum));
+            //tokenVector.push_back(Token(COMMENT, temp, lineNum));
             commentScan = false;
             break;
         }

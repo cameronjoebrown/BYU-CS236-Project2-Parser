@@ -17,15 +17,16 @@ using namespace std;
 class Parameter {
 public:
     Parameter();
-    Parameter(string tokenType, string val);
+    Parameter(string val);
+    Parameter(string val, string tokenType);
     ~Parameter();
     string getValue();
-    string getType();
     string toString();
-    
+    string getType();
+    void setValue(string val);
 private:
-    string type;
     string value;
+    string type;
     
 };
 
