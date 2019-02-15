@@ -31,5 +31,5 @@ string Parameter :: getType() {
 }
 
 string Parameter :: toString() {
-    return "";
+    return value;
 }

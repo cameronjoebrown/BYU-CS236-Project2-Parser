@@ -16,6 +16,7 @@
 #include <string>
 #include "Token.h"
 #include "Scanner.h"
+#include "DatalogProgram.h"
 
 using namespace std;
 
@@ -42,10 +43,14 @@ public:
     void parameterList();
     void expression();
     void operate();
+    DatalogProgram getData();
     
 private:
     Token current;
     vector<Token> tokenVector;
+    DatalogProgram data;
+    Predicate p;
+    Rule r;
 };
 
 

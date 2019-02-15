@@ -94,6 +94,10 @@ TokenType Token :: getTokenType() {
     return type;
 }
 
+string Token :: getValue() {
+    return value;
+}
+
 /* I'm not sure if it would better to have this function and tokenVector
  in Scanner of Token
 vector<Token> Token :: getVector() {

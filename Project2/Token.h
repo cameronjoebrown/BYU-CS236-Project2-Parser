@@ -29,6 +29,7 @@ public:
     string toString();
     void printToken();
     TokenType getTokenType();
+    string getValue();
     //vector<Token> getVector();
 private:
     TokenType type;

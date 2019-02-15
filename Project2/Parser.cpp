@@ -9,6 +9,7 @@
 #include "Parser.h"
 #include <iostream>
 #include <cctype>
+#include <sstream>
 
 using namespace std;
 
@@ -50,15 +51,12 @@ void Parser :: parse() {
         
         match(END);
         
-        cout << "Success!" << endl;
-        // Print Structures and Domain
+        cout << data.toString();
     }
     catch(Token error) {
         cout << "Failure!" << endl << "  ";
         error.printToken();
     }
-
-    
     
 }
 
@@ -74,39 +72,53 @@ void Parser :: match(TokenType t) {
 
 void Parser :: scheme() {
     //scheme -> ID LEFT_PAREN ID idList RIGHT_PAREN
+    p = Predicate(current.getValue());
     match(ID);
     match(LEFT_PAREN);
+    if (current.getTokenType() == ID){
+        p.addParameter(Parameter(current.toString(), current.getValue()));
+    }
     match(ID);
     if(current.getTokenType() == COMMA) {
         idList();
     }
     match(RIGHT_PAREN);
+    data.addScheme(p);
 }
 void Parser :: fact() {
     // fact -> ID LEFT_PAREN STRING stringList RIGHT_PAREN PERIOD
+    p = Predicate(current.getValue());
     match(ID);
     match(LEFT_PAREN);
+    if (current.getTokenType() == STRING){
+        p.addParameter(Parameter(current.toString(), current.getValue()));
+    }
     match(STRING);
     if(current.getTokenType() == COMMA) {
         stringList();
     }
     match(RIGHT_PAREN);
     match(PERIOD);
+    data.addFact(p);
 }
 void Parser :: rule() {
     // rule ->  headPredicate COLON_DASH predicate predicateList PERIOD
     headPredicate();
+    r = Rule(p);
     match(COLON_DASH);
     predicate();
     if (current.getTokenType() == COMMA){
        predicateList();
     }
     match(PERIOD);
+    data.addRule(r);
 }
 void Parser :: query() {
     // query -> predicate Q_MARK
+    p = Predicate(current.getValue());
     predicate();
     match(Q_MARK);
+    data.addQuery(p);
 }
 void Parser :: schemeList() {
     // schemeList -> scheme schemeList | lambda
@@ -146,7 +158,7 @@ void Parser :: queryList() {
             queryList();
         }
         else if(current.getTokenType() != END){
-            //throw string(current.printTokens());
+            throw current;
         }
         
     }
@@ -156,7 +168,7 @@ void Parser :: idList() {
     // idList -> COMMA ID idList | lambda
     match(COMMA);
     if (current.getTokenType() == ID){
-        
+        p.addParameter(Parameter(current.toString(), current.getValue()));
     }
     match(ID);
     if (current.getTokenType() == COMMA) {
@@ -168,7 +180,7 @@ void Parser :: stringList() {
     // stringList -> COMMA STRING stringList | lambda
     match(COMMA);
     if (current.getTokenType() == STRING){
-
+        p.addParameter(Parameter(current.toString(), current.getValue()));
     }
     match(STRING);
     if (current.getTokenType() == COMMA) {
@@ -179,10 +191,11 @@ void Parser :: stringList() {
 
 void Parser :: headPredicate() {
     // headPredicate ->  ID LEFT_PAREN ID idList RIGHT_PAREN
+    p = Predicate(current.getValue());
     match(ID);
     match(LEFT_PAREN);
     if (current.getTokenType() == ID){
-
+        p.addParameter(Parameter(current.toString(), current.getValue()));
     }
     match(ID);
     if (current.getTokenType() == COMMA){
@@ -193,6 +206,7 @@ void Parser :: headPredicate() {
 
 void Parser :: predicate() {
     // predicate -> ID LEFT_PAREN parameter parameterList RIGHT_PAREN
+    p = Predicate(current.getValue());
     match(ID);
     match(LEFT_PAREN);
     parameter();
@@ -200,6 +214,7 @@ void Parser :: predicate() {
         parameterList();
     }
     match(RIGHT_PAREN);
+    r.addPredicate(p);
 }
 
 void Parser :: predicateList(){
@@ -214,6 +229,7 @@ void Parser :: predicateList(){
 void Parser :: parameter() {
     //  parameter -> STRING | ID | expression
     if(current.getTokenType() == STRING || current.getTokenType() == ID){
+        p.addParameter(Parameter(current.toString(), current.getValue()));
         match(current.getTokenType());
     }
     if (current.getTokenType() == LEFT_PAREN){
@@ -249,3 +265,6 @@ void Parser :: operate(){
     }
 }
 
+DatalogProgram Parser :: getData(){
+    return data;
+}
