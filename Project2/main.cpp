@@ -9,7 +9,6 @@
 #include <string>
 #include <iostream>
 #include <fstream>
-#include "Scanner.h"
 #include "Parser.h"
 
 using namespace std;

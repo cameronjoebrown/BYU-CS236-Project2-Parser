@@ -10,5 +10,23 @@
 #define Rule_h
 
 #include <stdio.h>
+#include "Predicate.h"
+
+using namespace std;
+
+class Rule {
+public:
+    Rule();
+    ~Rule();
+    Rule(Predicate p);
+    Rule(Predicate pred, vector<Predicate> predList);
+    void addPredicate(Predicate pred);
+    vector<Predicate> getPredicateList();
+    Predicate getPredicate();
+    string toString();
+private:
+    vector<Predicate> predicateList;
+    Predicate predicate;
+};
 
 #endif /* Rule_h */

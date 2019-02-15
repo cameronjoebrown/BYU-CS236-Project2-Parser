@@ -10,5 +10,23 @@
 #define Parameter_h
 
 #include <stdio.h>
+#include <string>
+
+using namespace std;
+
+class Parameter {
+public:
+    Parameter();
+    Parameter(string tokenType, string val);
+    ~Parameter();
+    string getValue();
+    string getType();
+    string toString();
+    
+private:
+    string type;
+    string value;
+    
+};
 
 #endif /* Parameter_h */

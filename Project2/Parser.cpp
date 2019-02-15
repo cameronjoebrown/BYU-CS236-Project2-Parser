@@ -55,7 +55,7 @@ void Parser :: parse() {
     }
     catch(Token error) {
         cout << "Failure!" << endl << "  ";
-        current.printToken();
+        error.printToken();
     }
 
     
@@ -156,7 +156,7 @@ void Parser :: idList() {
     // idList -> COMMA ID idList | lambda
     match(COMMA);
     if (current.getTokenType() == ID){
-        // Do something???
+        
     }
     match(ID);
     if (current.getTokenType() == COMMA) {
@@ -168,7 +168,7 @@ void Parser :: stringList() {
     // stringList -> COMMA STRING stringList | lambda
     match(COMMA);
     if (current.getTokenType() == STRING){
-        //p.addParameter(Parameter(curr.getType(), curr.getValue()));
+
     }
     match(STRING);
     if (current.getTokenType() == COMMA) {
@@ -182,7 +182,7 @@ void Parser :: headPredicate() {
     match(ID);
     match(LEFT_PAREN);
     if (current.getTokenType() == ID){
-        //p.addParameter(Parameter(curr.getType(), curr.getValue()));
+
     }
     match(ID);
     if (current.getTokenType() == COMMA){
@@ -214,7 +214,6 @@ void Parser :: predicateList(){
 void Parser :: parameter() {
     //  parameter -> STRING | ID | expression
     if(current.getTokenType() == STRING || current.getTokenType() == ID){
-        //p.addParameter(Parameter(curr.getType(), curr.getValue()));
         match(current.getTokenType());
     }
     if (current.getTokenType() == LEFT_PAREN){
