@@ -272,7 +272,7 @@ void Parser :: operate(){
     }
 }
 
-Token getCurrentToken() {
+Token Parser :: getCurrentToken() {
     return current;
 }
 
