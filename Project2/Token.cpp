@@ -87,7 +87,7 @@ string Token :: toString() {
 }
 
 void Token :: printToken() {
-    cout << "(" << toString() << "," << "\"" << value << "\"," << lineNum << ")" << endl;
+    cout << "(" << toString() << "," << "\"" << value << "\"," << lineNum << ")";
 }
 
 TokenType Token :: getTokenType() {

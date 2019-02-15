@@ -43,10 +43,11 @@ public:
     void parameterList();
     void expression();
     void operate();
+    vector<Token> getTokenVector();
     DatalogProgram getData();
     Predicate getPredicate();;
     Rule getRule();
-    vector<Token> getTokenVector();
+    
     
 private:
     Token current;

@@ -272,10 +272,6 @@ void Parser :: operate(){
     }
 }
 
-Token Parser :: getCurrentToken() {
-    return current;
-}
-
 vector<Token> Parser :: getTokenVector() {
     return tokenVector;
 }
