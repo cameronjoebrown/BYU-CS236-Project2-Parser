@@ -218,11 +218,8 @@ Parameter Parser :: parameter() {
         match(ID);
     }
     else if(current.getTokenType() == LEFT_PAREN) {
-        string val = "(";
-        match(LEFT_PAREN);
+        string val;
         val += expression();
-        match(RIGHT_PAREN);
-        val += ")";
         newParam.setValue(val);
     }
     else {
@@ -242,10 +239,13 @@ void Parser :: parameterList() {
 
 string Parser :: expression() {
     // expression -> LEFT_PAREN parameter operator parameter RIGHT_PAREN
-    string temp;
+    string temp = "(";
+    match(LEFT_PAREN);
     temp += parameter().getValue();
     temp += operate();
     temp += parameter().getValue();
+    match(RIGHT_PAREN);
+    temp += ")";
     return temp;
 }
 
