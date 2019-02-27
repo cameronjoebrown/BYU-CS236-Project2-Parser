@@ -100,7 +100,7 @@ string Token :: getValue() {
 }
 
 /* I'm not sure if it would better to have this function and tokenVector
- in Scanner of Token
+ in Scanner or Token
 vector<Token> Token :: getVector() {
     return tokenVector;
 }
